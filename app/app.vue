@@ -1,0 +1,1 @@
+<template><div class="site-shell"><AppHeader/><main id="main-content"><NuxtPage/></main><AppFooter/></div></template>
