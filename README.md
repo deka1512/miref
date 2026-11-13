@@ -2,7 +2,7 @@
 
 The digital home of MIREF: a welcoming, editorial-first church website built with **Nuxt 4**, **Vue 3**, **TypeScript**, **PrimeVue**, **Tailwind CSS v4** and an optional **Directus** headless CMS.
 
-> Important: sample articles, testimonials and ministry descriptions are editorial starter content. Confirm all church-specific facts and obtain consent before publishing. No unverified donation details, service times, leadership identities or contact coordinates are presented as confirmed facts.
+> Important: sample articles, testimonials and ministry descriptions are editorial starter content. Confirm all church-specific facts and obtain consent before publishing. Sample worship hours are explicitly provisional. Testimonials are fictional examples. Confirm all schedules, biographies, contact details and social links with MIREF's authorized team before publication.
 
 ## Included
 - Responsive homepage with hero, welcome, vision, activities, testimonials, news and invitation sections.
