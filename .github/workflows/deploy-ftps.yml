@@ -49,6 +49,7 @@ jobs:
 
   deploy:
     name: Publish to SamKirkland FTPS
+    if: ${{ vars.FTP_DEPLOY_ENABLED == 'true' }}
     needs: build
     runs-on: ubuntu-latest
     environment: production
