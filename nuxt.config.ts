@@ -36,6 +36,13 @@ export default defineNuxtConfig({
       ]
     }
   },
-  nitro: { preset: 'node-server' },
+  // Static Site Generation: nuxt generate prerenders linked pages into .output/public.
+  nitro: {
+    prerender: {
+      crawlLinks: true,
+      failOnError: true,
+      routes: ['/']
+    }
+  },
   typescript: { strict: true }
 })
