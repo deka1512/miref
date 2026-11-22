@@ -1,0 +1,73 @@
+name: Deploy MIREF (SSG) to SamKirkland FTPS
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: miref-production-deploy
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Build static website
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Type check
+        run: npm run typecheck
+
+      - name: Generate static site
+        run: npm run generate
+
+      - name: Verify generated website
+        run: |
+          test -s .output/public/index.html
+          test -d .output/public
+
+      - name: Upload static artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: miref-static-site
+          path: .output/public/
+          if-no-files-found: error
+          retention-days: 7
+
+  deploy:
+    name: Publish to SamKirkland FTPS
+    needs: build
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Download generated website
+        uses: actions/download-artifact@v4
+        with:
+          name: miref-static-site
+          path: ./.output/public/
+
+      - name: Deploy website via explicit FTPS
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftps
+          local-dir: ./.output/public/
+          server-dir: ${{ secrets.FTP_SERVER_DIR }}
+          state-name: .ftp-deploy-sync-state-miref.json
+          dangerous-clean-slate: false
+          log-level: standard
